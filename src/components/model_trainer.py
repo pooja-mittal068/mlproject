@@ -8,10 +8,6 @@ from sklearn.ensemble import (
     GradientBoostingRegressor,
     RandomForestRegressor,
 )
-<<<<<<< HEAD
-=======
-
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsRegressor
@@ -25,32 +21,15 @@ from src.utils import save_object,evaluate_models
 
 @dataclass
 class ModelTrainerConfig:
-<<<<<<< HEAD
-    trained_model_file_path=os.path.join("artifacts","model.pkl")
-
-class ModelTrainer:
-    def __init__(self):
-        self.model_trainer_config=ModelTrainerConfig()
-
-=======
     trained_model_file_path = os.path.join("artifacts", "model.pkl")
 
 class ModelTrainer:
     def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
 
     def initiate_model_trainer(self,train_array,test_array):
         try:
             logging.info("Split training and test input data")
-<<<<<<< HEAD
-            X_train,y_train,X_test,y_test=(
-                train_array[:,:-1],
-                train_array[:,-1],
-                test_array[:,:-1],
-                test_array[:,-1]
-            )
-=======
             X_train,y_train,X_test,y_test = (
                 train_array[:,:-1],
                 train_array[:,-1],
@@ -58,25 +37,17 @@ class ModelTrainer:
                 test_array[:,-1],
             )
 
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
             models = {
                 "Random Forest": RandomForestRegressor(),
                 "Decision Tree": DecisionTreeRegressor(),
                 "Gradient Boosting": GradientBoostingRegressor(),
                 "Linear Regression": LinearRegression(),
-<<<<<<< HEAD
-                "XGBRegressor": XGBRegressor(),
-                "CatBoosting Regressor": CatBoostRegressor(verbose=False),
-                "AdaBoost Regressor": AdaBoostRegressor(),
-            }
-=======
-                #"K-Neighbors Classifier": KNeighborsRegressor(),
+                "K-Neighbors Regressor": KNeighborsRegressor(),
                 "XGBRegressor": XGBRegressor(), 
                 "CatBoosting Regressor": CatBoostRegressor(verbose=False),
                 "AdaBoost Regressor": AdaBoostRegressor(),
             }
 
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
             params={
                 "Decision Tree": {
                     'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
@@ -98,6 +69,9 @@ class ModelTrainer:
                     'n_estimators': [8,16,32,64,128,256]
                 },
                 "Linear Regression":{},
+                "K-Neighbors Regressor":{
+                    'n_neighbors': [5,7,9,11]
+                },
                 "XGBRegressor":{
                     'learning_rate':[.1,.01,.05,.001],
                     'n_estimators': [8,16,32,64,128,256]
@@ -115,16 +89,6 @@ class ModelTrainer:
                 
             }
 
-<<<<<<< HEAD
-            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
-                                             models=models,param=params)
-            
-            ## To get best model score from dict
-            best_model_score = max(sorted(model_report.values()))
-
-            ## To get best model name from dict
-
-=======
             model_report:dict=evaluate_models(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
                                             models=models,param=params)
 
@@ -132,38 +96,22 @@ class ModelTrainer:
             best_model_score = max(sorted(model_report.values()))
 
             # To find best model name from dict
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
             best_model_name = list(model_report.keys())[
                 list(model_report.values()).index(best_model_score)
             ]
             best_model = models[best_model_name]
 
-            if best_model_score<0.6:
+            if best_model_score < 0.6:
                 raise CustomException("No best model found")
-<<<<<<< HEAD
-            logging.info(f"Best found model on both training and testing dataset")
-=======
             logging.info("Best found model on both training and testing dataset")
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
+
+            ## We can load the preprocessing_obj from data transformation here for any purpose like any new data coming, for now we aren't doing it here
 
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
             )
 
-<<<<<<< HEAD
-            predicted=best_model.predict(X_test)
-
-            r2_square = r2_score(y_test, predicted)
-            return r2_square
-            
-
-
-
-            
-        except Exception as e:
-            raise CustomException(e,sys)
-=======
             predicted = best_model.predict(X_test)
 
             r2_square = r2_score(y_test, predicted)
@@ -174,4 +122,3 @@ class ModelTrainer:
 
 
 
->>>>>>> a919872dc5dc7e47a4f4652a2ab672308f8ee68d
