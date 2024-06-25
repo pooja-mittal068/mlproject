@@ -1,5 +1,5 @@
 FROM python:3.12.4-slim
-WORkDIR /app     
+WORKDIR /app     
 COPY . /app  
 
 RUN apt update -y && apt install awscli -y
