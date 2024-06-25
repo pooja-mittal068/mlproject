@@ -21,3 +21,5 @@ set.py - responsible for creating Maching Learning Application as a package and 
 
 Run the application:
 python app.py
+
+AWS Deployment
